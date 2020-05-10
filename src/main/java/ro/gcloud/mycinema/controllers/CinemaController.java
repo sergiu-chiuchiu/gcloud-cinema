@@ -26,10 +26,10 @@ public class CinemaController {
 
     private Logger logger = LogManager.getLogger(this.getClass());
 
-    @GetMapping("/")
-    public String hello() {
-        return "Hello world!";
-    }
+//    @GetMapping("/")
+//    public String hello() {
+//        return "Hello world!";
+//    }
 
     @GetMapping
     public List<Cinema> getAllCinemas() {
