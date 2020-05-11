@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import ro.gcloud.mycinema.entity.Reservation;
 import ro.gcloud.mycinema.exceptions.NotFoundException;
 import ro.gcloud.mycinema.repositories.ReservationRepository;
+import ro.gcloud.mycinema.services.EmailService;
+import ro.gcloud.mycinema.services.PersonService;
 import ro.gcloud.mycinema.services.ReservationService;
 
 import java.util.Collection;
@@ -17,9 +19,15 @@ public class ReservationServiceImpl implements ReservationService {
     private final ReservationRepository reservationRepository;
 
     @Autowired
+    PersonService personService;
+
+    @Autowired
     public ReservationServiceImpl(ReservationRepository reservationRepository) {
         this.reservationRepository = reservationRepository;
     }
+    @Autowired
+    private EmailService emailService;
+
     private Logger logger = LogManager.getLogger(this.getClass());
 
     @Override
@@ -35,7 +43,15 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     public Reservation saveReservation(Reservation reservation) {
-        return reservationRepository.save(reservation);
+        Reservation savedReservation = reservationRepository.save(reservation);
+        String receiver = null;
+        try {
+            receiver = personService.getPersonById(reservation.getPerson().getId()).getEmail();
+        } catch (NotFoundException e) {
+            e.printStackTrace();
+        }
+        emailService.sendTestEmail(receiver);
+        return savedReservation;
     }
 
     @Override

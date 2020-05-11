@@ -14,7 +14,7 @@
 
 # [START gae_java11_helloworld_yaml]
 runtime: java11
-instance_class: F1
+instance_class: F4
 
 vpc_access_connector:
   name: "projects/gclcinema/locations/europe-west3/connectors/vpc-conn"
